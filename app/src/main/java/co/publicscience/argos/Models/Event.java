@@ -19,6 +19,7 @@ public class Event implements Comparable<Event>, Serializable {
     private List<String> summary;
     private String image;
     private List<Article> articles = new ArrayList<Article>();
+    private List<Concept> concepts = new ArrayList<Concept>();
 
     @SerializedName("created_at")
     private Date createdAt;
@@ -53,6 +54,12 @@ public class Event implements Comparable<Event>, Serializable {
     }
     public void setArticles(List<Article> articles) {
         this.articles = articles;
+    }
+    public List<Concept> getConcepts() {
+        return concepts;
+    }
+    public void setConcepts(List<Concept> concepts) {
+        this.concepts = concepts;
     }
 
 
@@ -103,6 +110,7 @@ public class Event implements Comparable<Event>, Serializable {
 
     @Override
     public int compareTo(Event event) {
+        // Datetime, descending (most recent first).
         return event.getCreatedAt().compareTo(getCreatedAt());
     }
 }

@@ -1,112 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
-    <android.support.v7.widget.Toolbar
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/toolbar"
-        android:layout_height="wrap_content"
+    <FrameLayout
+        android:id="@+id/eventDetail_frame"
         android:layout_width="match_parent"
-        android:minHeight="?attr/actionBarSize"
-        android:background="?attr/colorPrimary" />
-
-    <ScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
 
         <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
 
-            <LinearLayout
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:minHeight="?attr/actionBarSize"
+                android:background="?attr/colorPrimary" />
+
+            <ScrollView
                 xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin" >
-
-                <TextView
-                    android:id="@+id/createdAt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:textSize="14sp"
-                    android:layout_marginTop="16dp"
-                    android:textColor="@color/meta" />
-
-                <TextView
-                    android:id="@+id/title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:lineSpacingMultiplier="1.2"
-                    android:textSize="36sp"
-                    android:textColor="@color/textHeader"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="20dp" />
-
-                <ImageView
-                    android:id="@+id/image"
-                    android:layout_width="match_parent"
-                    android:layout_marginBottom="20dp"
-                    android:layout_height="240dp" />
-
-                <TextView
-                    android:text="@string/summary_header"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:textSize="24sp"
-                    android:textColor="@color/textHeader" />
+                android:layout_height="match_parent" >
 
                 <LinearLayout
-                    android:id="@+id/summary"
+                    xmlns:android="http://schemas.android.com/apk/res/android"
                     android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp" />
-            </LinearLayout>
+                    android:layout_height="wrap_content" >
 
-            <View
-                android:id="@+id/divider"
-                android:layout_width="match_parent"
-                android:layout_height="8dp"
-                android:background="@drawable/divider"/>
+                    <LinearLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:paddingRight="@dimen/activity_horizontal_margin"
+                        android:paddingTop="@dimen/activity_vertical_margin"
+                        android:paddingBottom="@dimen/activity_vertical_margin" >
 
-            <LinearLayout
-                android:background="@color/altBackground"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin" >
+                        <TextView
+                            android:id="@+id/createdAt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="start"
+                            android:textSize="14sp"
+                            android:layout_marginTop="16dp"
+                            android:textColor="@color/meta" />
 
-                <TextView
-                    android:text="@string/sources_header"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:textSize="24sp"
-                    android:textColor="@color/white" />
+                        <TextView
+                            android:id="@+id/eventTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="start"
+                            android:lineSpacingMultiplier="1.2"
+                            android:textSize="36sp"
+                            android:textColor="@color/textHeader"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginBottom="20dp" />
 
-                <LinearLayout
-                    android:id="@+id/sources"
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp" />
-            </LinearLayout>
+                        <ImageView
+                            android:id="@+id/eventImage"
+                            android:layout_width="match_parent"
+                            android:layout_marginBottom="20dp"
+                            android:layout_height="240dp" />
+
+                        <TextView
+                            android:text="@string/summary_header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="start"
+                            android:textSize="24sp"
+                            android:textColor="@color/textHeader" />
+
+                        <LinearLayout
+                            android:id="@+id/eventSummary"
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp" />
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp"
+                        android:background="@drawable/divider"/>
+
+                    <LinearLayout
+                        android:background="@color/altBackground"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:paddingRight="@dimen/activity_horizontal_margin"
+                        android:paddingTop="@dimen/activity_vertical_margin"
+                        android:paddingBottom="@dimen/activity_vertical_margin" >
+
+                        <TextView
+                            android:text="@string/sources_header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="start"
+                            android:textSize="24sp"
+                            android:textColor="@color/white" />
+
+                        <LinearLayout
+                            android:id="@+id/sources"
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
         </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+    </FrameLayout>
+
+    <!-- The navigation drawer -->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/mentions_drawer"
+        android:layout_width="320dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        android:background="#111" />
+
+</android.support.v4.widget.DrawerLayout>

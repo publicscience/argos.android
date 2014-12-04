@@ -26,6 +26,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".StreamActivity"/>
         </activity>
+        <activity
+            android:name=".ConceptDetailActivity"
+            android:label="Concept"
+            android:parentActivityName=".EventDetailActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".EventDetailActivity"/>
+        </activity>
     </application>
 
 </manifest>

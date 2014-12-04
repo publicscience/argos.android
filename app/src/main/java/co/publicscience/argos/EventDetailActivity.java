@@ -1,14 +1,14 @@
 package co.publicscience.argos;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -18,11 +18,11 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collections;
 import java.util.List;
 
 import co.publicscience.argos.Models.Article;
+import co.publicscience.argos.Models.Concept;
 import co.publicscience.argos.Models.Event;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -44,7 +44,26 @@ public class EventDetailActivity extends ActionBarActivity {
 
         event = (Event)this.getIntent().getSerializableExtra("event");
 
-        TextView titleTextView = (TextView)findViewById(R.id.title);
+        // Setup the mentions drawer.
+        List<Concept> mentions = event.getConcepts();
+        Collections.sort(mentions);
+        RecyclerView mentionsDrawer = (RecyclerView)findViewById(R.id.mentions_drawer);
+        mentionsDrawer.setLayoutManager(new LinearLayoutManager(this));
+        mentionsDrawer.setItemAnimator(new DefaultItemAnimator());
+        ConceptAdapter adapter = new ConceptAdapter(mentions, R.layout.concept_item, this);
+        mentionsDrawer.setAdapter(adapter);
+
+        final EventDetailActivity self = this;
+        adapter.SetOnItemClickListener(new ConceptAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position, Concept concept) {
+                Intent detailIntent = new Intent(self, ConceptDetailActivity.class);
+                detailIntent.putExtra("concept", concept);
+                startActivity(detailIntent);
+            }
+        });
+
+        TextView titleTextView = (TextView)findViewById(R.id.eventTitle);
         titleTextView.setText(event.getTitle());
 
         TextView dateTextView = (TextView)findViewById(R.id.createdAt);
@@ -56,16 +75,17 @@ public class EventDetailActivity extends ActionBarActivity {
                 event.getArticles().size()));
 
         // Download and show the image.
-        ImageView imageView = (ImageView)findViewById(R.id.image);
+        ImageView imageView = (ImageView)findViewById(R.id.eventImage);
         Picasso.with(this).load(event.getImage()).fit().centerCrop().into(imageView);
 
+        // Add bullet points to summary items TO DO make this nicer
         List<String> summary = event.getSummary();
         for (int i=0; i<summary.size(); i++) {
             summary.set(i, "• " + summary.get(i));
         }
 
         // Create the summary items.
-        LinearLayout summaryView = (LinearLayout)findViewById(R.id.summary);
+        LinearLayout summaryView = (LinearLayout)findViewById(R.id.eventSummary);
         for (String line : event.getSummary()) {
             View vi = getLayoutInflater().inflate(R.layout.summary_item, null);
             TextView summarySentenceView = (TextView)vi.findViewById(R.id.summarySentence);

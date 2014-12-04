@@ -5,5 +5,6 @@
     <string name="summary_header">In brief</string>
     <string name="sources_header">In depth</string>
     <string name="action_settings">Settings</string>
+    <string name="concept_stories_header">Stories</string>
 
 </resources>

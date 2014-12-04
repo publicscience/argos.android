@@ -3,6 +3,7 @@ package co.publicscience.argos.Services;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import co.publicscience.argos.Models.Concept;
 import co.publicscience.argos.Models.Event;
 import co.publicscience.argos.Responses.EventsResponse;
 import retrofit.RequestInterceptor;
@@ -48,5 +49,8 @@ public class ArgosService {
 
         @GET("/events/{id}")
         void getEvent(@Path("id") int eventId, Callback<Event> cb);
+
+        @GET("/concepts/{slug}")
+        void getConcept(@Path("slug") String conceptSlug, Callback<Concept> cb);
     }
 }
