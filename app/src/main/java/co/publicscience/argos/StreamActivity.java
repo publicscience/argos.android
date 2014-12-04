@@ -3,26 +3,37 @@ package co.publicscience.argos;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.CursorAdapter;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import co.publicscience.argos.Models.Event;
+import co.publicscience.argos.Models.SearchResult;
 import co.publicscience.argos.Responses.EventsResponse;
+import co.publicscience.argos.Responses.SearchResponse;
 import co.publicscience.argos.Services.ArgosService;
 import co.publicscience.argos.Util.SimpleSectionedRecyclerViewAdapter;
 import retrofit.Callback;
@@ -31,7 +42,7 @@ import retrofit.client.Response;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
-public class StreamActivity extends ActionBarActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class StreamActivity extends ActionBarActivity implements SwipeRefreshLayout.OnRefreshListener, SearchView.OnQueryTextListener, SearchView.OnSuggestionListener {
 
     SwipeRefreshLayout mSwipeLayout;
     RecyclerView eventListView;
@@ -94,14 +105,6 @@ public class StreamActivity extends ActionBarActivity implements SwipeRefreshLay
         requestData();
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_stream, menu);
-        return true;
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -154,5 +157,121 @@ public class StreamActivity extends ActionBarActivity implements SwipeRefreshLay
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(new CalligraphyContextWrapper(newBase));
+    }
+
+
+
+    private SearchResultAdapter mSearchResultAdapter;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_stream, menu);
+
+        SearchView searchView = (SearchView)MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        searchView.setOnQueryTextListener(this);
+        searchView.setOnSuggestionListener(this);
+        mSearchResultAdapter = new SearchResultAdapter(
+                                                        this,
+                                                        R.layout.search_result,
+                                                        null,
+                                                        new String[] {"_id", "name", "type", "id"},
+                                                        null,
+                                                        0);
+        searchView.setSuggestionsAdapter(mSearchResultAdapter);
+
+        return true;
+    }
+
+    private Timer searchTimer = new Timer();
+    @Override
+    public boolean onQueryTextSubmit(final String s) {
+        if (s.length() > 3) {
+            searchTimer.cancel();
+            searchTimer = new Timer();
+            searchTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    search(s);
+                }
+            }, 1000);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String s) {
+        return onQueryTextSubmit(s);
+    }
+
+    private List<SearchResult> searchResults = new ArrayList<SearchResult>();
+    private List<SearchResult> search(String query) {
+        argosService.getAPI().getSearch(query, new Callback<SearchResponse>() {
+            @Override
+            public void success(SearchResponse searchResponse, Response response) {
+                searchResults.clear();
+                searchResults.addAll(searchResponse.getSearchResults());
+
+                String[] columnNames = {"_id", "name", "type", "id"};
+                String[] temp = new String[4];
+                int _id = 0;
+
+                MatrixCursor cursor = new MatrixCursor(columnNames);
+                for (SearchResult result : searchResponse.getSearchResults()) {
+                    temp[0] = Integer.toString(_id++);
+
+                    String name = result.getName();
+                    if (name == null) {
+                        name = result.getTitle();
+                    }
+                    temp[1] = name;
+
+                    temp[2] = result.getType();
+
+                    String id = result.getSlug();
+                    if (id == null) {
+                        id = Integer.toString(result.getID());
+                    }
+                    temp[3] = id;
+
+                    cursor.addRow(temp);
+                }
+                mSearchResultAdapter.changeCursor(cursor);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d("StreamActivity", error.getMessage());
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        return new ArrayList<SearchResult>();
+    }
+    @Override
+    public boolean onSuggestionSelect(int i) {
+        SearchResult searchResult = searchResults.get(i);
+        String type = searchResult.getType();
+        Intent detailIntent;
+
+        if (type.equals("concept")) {
+            detailIntent = new Intent(this, ConceptDetailActivity.class);
+            detailIntent.putExtra("concept", searchResult.asConcept());
+
+        } else if (type.equals("event")) {
+            detailIntent = new Intent(this, EventDetailActivity.class);
+            detailIntent.putExtra("event", searchResult.asEvent());
+
+        } else { // Story
+            detailIntent = new Intent(this, StoryDetailActivity.class);
+            detailIntent.putExtra("story", searchResult.asStory());
+        }
+
+        startActivity(detailIntent);
+
+        return true;
+    }
+
+    @Override
+    public boolean onSuggestionClick(int i) {
+        return onSuggestionSelect(i);
     }
 }

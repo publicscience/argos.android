@@ -8,19 +8,35 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <meta-data android:name="android.app.default_searchable" android:value=".SearchActivity" />
         <activity
             android:name="co.publicscience.argos.StreamActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".SearchActivity"
+            android:label="Search"
+            android:launchMode="singleTop" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH"></action>
             </intent-filter>
         </activity>
         <activity
             android:name=".EventDetailActivity"
             android:label="Event"
+            android:parentActivityName=".StreamActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".StreamActivity"/>
+        </activity>
+        <activity
+            android:name=".StoryDetailActivity"
+            android:label="Story"
             android:parentActivityName=".StreamActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
