@@ -13,6 +13,7 @@ import retrofit.converter.GsonConverter;
 import retrofit.http.GET;
 import retrofit.http.Path;
 import retrofit.Callback;
+import retrofit.http.Query;
 
 public class ArgosService {
     private static final String BASE_URL = "http://argos.starbase.in";
@@ -46,7 +47,7 @@ public class ArgosService {
 
     public interface ArgosServiceInterface {
         @GET("/events")
-        void getEvents(Callback<EventsResponse> cb);
+        void getEvents(@Query("page") int page, Callback<EventsResponse> cb);
 
         @GET("/events/{id}")
         void getEvent(@Path("id") int eventId, Callback<Event> cb);

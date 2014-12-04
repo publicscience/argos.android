@@ -33,6 +33,7 @@ import java.util.TimerTask;
 import co.publicscience.argos.Models.Event;
 import co.publicscience.argos.Models.SearchResult;
 import co.publicscience.argos.Responses.EventsResponse;
+import co.publicscience.argos.Responses.Pagination;
 import co.publicscience.argos.Responses.SearchResponse;
 import co.publicscience.argos.Services.ArgosService;
 import co.publicscience.argos.Util.SimpleSectionedRecyclerViewAdapter;
@@ -51,6 +52,13 @@ public class StreamActivity extends ActionBarActivity implements SwipeRefreshLay
     ArgosService argosService = new ArgosService();
     List<SimpleSectionedRecyclerViewAdapter.Section> sections = new ArrayList<SimpleSectionedRecyclerViewAdapter.Section>();
     SimpleSectionedRecyclerViewAdapter mSectionedAdapter;
+
+    private int currentPage = 1;
+    private boolean reachedEnd = false;
+    private int previousTotal = 0;
+    private boolean loading = true;
+    private int visibleThreshold = 5;
+    int firstVisibleItem, visibleItemCount, totalItemCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +81,41 @@ public class StreamActivity extends ActionBarActivity implements SwipeRefreshLay
                 android.R.color.holo_red_light);
 
         // Setup the sectioned recycling list view.
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         eventListView = (RecyclerView)findViewById(R.id.event_listview);
-        eventListView.setLayoutManager(new LinearLayoutManager(this));
+        eventListView.setLayoutManager(layoutManager);
         eventListView.setItemAnimator(new DefaultItemAnimator());
+
+        // Infinite scroll
+        eventListView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                visibleItemCount = eventListView.getChildCount();
+                totalItemCount = layoutManager.getItemCount();
+                firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
+
+                if (loading) {
+                    if (totalItemCount > previousTotal) {
+                        loading = false;
+                        previousTotal = totalItemCount;
+                    }
+
+                }
+                if (!loading && (totalItemCount - visibleItemCount)
+                        <= (firstVisibleItem + visibleThreshold)) {
+
+                    if (!reachedEnd) {
+                        currentPage++;
+                        loading = true;
+                        requestData(currentPage);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "All events have been loaded!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
 
         mAdapter = new EventAdapter(mEventList, R.layout.event_card, this);
 
@@ -102,7 +142,7 @@ public class StreamActivity extends ActionBarActivity implements SwipeRefreshLay
                 mSwipeLayout.setRefreshing(true);
             }
         });
-        requestData();
+        requestData(1);
     }
 
     @Override
@@ -120,12 +160,15 @@ public class StreamActivity extends ActionBarActivity implements SwipeRefreshLay
         return super.onOptionsItemSelected(item);
     }
 
-    private void requestData() {
-        argosService.getAPI().getEvents(new Callback<EventsResponse>() {
+    private void requestData(final int page) {
+        argosService.getAPI().getEvents(page, new Callback<EventsResponse>() {
             @Override
             public void success(EventsResponse eventsResponse, Response response) {
-                mEventList.clear();
-                sections.clear();
+                // Reset if we are refreshing, which will be when the requested page is lte the current page.
+                if (currentPage <= page) {
+                    mEventList.clear();
+                    sections.clear();
+                }
 
                 mEventList.addAll(eventsResponse.getEvents());
 
@@ -139,6 +182,11 @@ public class StreamActivity extends ActionBarActivity implements SwipeRefreshLay
 
                 mAdapter.notifyDataSetChanged();
                 mSwipeLayout.setRefreshing(false);
+
+                Pagination p = eventsResponse.getPagination();
+                if (p.page * p.per_page >= p.total_count) {
+                    reachedEnd = true;
+                }
             }
 
             @Override
@@ -151,7 +199,7 @@ public class StreamActivity extends ActionBarActivity implements SwipeRefreshLay
 
     @Override
     public void onRefresh() {
-        requestData();
+        requestData(1);
     }
 
     @Override
