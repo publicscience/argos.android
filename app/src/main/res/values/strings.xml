@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Argos</string>
+    <string name="summary_header">In brief</string>
+    <string name="sources_header">In depth</string>
+    <string name="action_settings">Settings</string>
+
+</resources>

@@ -1,0 +1,22 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:actionBarStyle">@style/ActionBar</item>
+    </style>
+
+    <style name="ActionBar"
+        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:displayOptions">showTitle</item>
+    </style>
+
+    <style name="AppTheme.TextAppearance" parent="android:TextAppearance">
+        <item name="fontPath">fonts/GraphikApp-Regular.ttf</item>
+    </style>
+    <style name="AppTheme.TextAppearance.Bold" parent="AppTheme.TextAppearance">
+        <item name="fontPath">fonts/GraphikApp-Semibold.ttf</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+</resources>
