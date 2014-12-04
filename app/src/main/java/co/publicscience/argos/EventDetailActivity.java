@@ -4,11 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -29,6 +33,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class EventDetailActivity extends ActionBarActivity {
 
     Event event;
+    ShareActionProvider mShareActionProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,5 +127,43 @@ public class EventDetailActivity extends ActionBarActivity {
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(new CalligraphyContextWrapper(newBase));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu.
+        // Adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
+
+        // Access the Share Item defined in menu XML
+        MenuItem shareItem = menu.findItem(R.id.menu_item_share);
+
+        // Access the object responsible for
+        // putting together the sharing submenu
+        if (shareItem != null) {
+            mShareActionProvider = (ShareActionProvider)MenuItemCompat.getActionProvider(shareItem);
+        }
+
+        // Create an Intent to share your content
+        setShareIntent();
+
+        return true;
+    }
+
+
+    private void setShareIntent() {
+
+        if (mShareActionProvider != null) {
+
+            // create an Intent with the contents of the TextView
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Android Development");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, "ay yoyoyoy");
+
+            // Make sure the provider knows
+            // it should work with that Intent
+            mShareActionProvider.setShareIntent(shareIntent);
+        }
     }
 }
