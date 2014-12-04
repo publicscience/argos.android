@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
@@ -24,7 +26,7 @@ import co.publicscience.argos.Models.Article;
 import co.publicscience.argos.Models.Event;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class EventDetailActivity extends Activity {
+public class EventDetailActivity extends ActionBarActivity {
 
     Event event;
 
@@ -32,6 +34,13 @@ public class EventDetailActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_detail);
+
+        // Setup the toolbar as the action bar.
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         event = (Event)this.getIntent().getSerializableExtra("event");
 
@@ -88,9 +97,6 @@ public class EventDetailActivity extends Activity {
 
             sourcesView.addView(vi);
         }
-
-        // Enable the "Up" button for more navigation options
-        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
