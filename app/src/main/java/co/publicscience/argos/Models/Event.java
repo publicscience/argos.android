@@ -16,7 +16,7 @@ public class Event implements Comparable<Event>, Serializable {
     private Integer id;
     private String title;
     private Float score;
-    private List<String> summary;
+    private List<SummarySentence> summary;
     private String image;
     private List<Article> articles = new ArrayList<Article>();
     private List<Concept> concepts = new ArrayList<Concept>();
@@ -37,10 +37,10 @@ public class Event implements Comparable<Event>, Serializable {
     public void setUpdatedAt(Date updatedAt) { this.updatedAt = updatedAt; }
     public Float getScore() { return score; }
     public void setScore(Float score) { this.score = score; }
-    public List<String> getSummary() {
+    public List<SummarySentence> getSummary() {
         return summary;
     }
-    public void setSummary(List<String> summary) {
+    public void setSummary(List<SummarySentence> summary) {
         this.summary = summary;
     }
     public String getImage() {

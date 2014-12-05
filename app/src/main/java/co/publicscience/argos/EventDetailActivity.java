@@ -28,6 +28,7 @@ import java.util.List;
 import co.publicscience.argos.Models.Article;
 import co.publicscience.argos.Models.Concept;
 import co.publicscience.argos.Models.Event;
+import co.publicscience.argos.Models.SummarySentence;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class EventDetailActivity extends ActionBarActivity {
@@ -84,17 +85,17 @@ public class EventDetailActivity extends ActionBarActivity {
         Picasso.with(this).load(event.getImage()).fit().centerCrop().into(imageView);
 
         // Add bullet points to summary items TO DO make this nicer
-        List<String> summary = event.getSummary();
-        for (int i=0; i<summary.size(); i++) {
-            summary.set(i, "• " + summary.get(i));
-        }
+        List<SummarySentence> summary = event.getSummary();
+//        for (int i=0; i<summary.size(); i++) {
+//            summary.set(i, "• " + summary.get(i));
+//        }
 
         // Create the summary items.
         LinearLayout summaryView = (LinearLayout)findViewById(R.id.eventSummary);
-        for (String line : event.getSummary()) {
+        for (SummarySentence summarySentence : event.getSummary()) {
             View vi = getLayoutInflater().inflate(R.layout.summary_item, null);
             TextView summarySentenceView = (TextView)vi.findViewById(R.id.summarySentence);
-            summarySentenceView.setText(line);
+            summarySentenceView.setText(summarySentence.getSentence());
             summaryView.addView(vi);
         }
 
