@@ -166,7 +166,7 @@ public class StreamActivity extends ActionBarActivity implements SwipeRefreshLay
 
                 mEventList.addAll(pResponse.getResults());
 
-                HashMap<Integer,String> sectionData = Event.splitEvents(pResponse.getResults());
+                HashMap<Integer,String> sectionData = Event.splitClustersByDay(pResponse.getResults());
                 for (Map.Entry<Integer, String> entry : sectionData.entrySet()) {
                     sections.add(new SectionedRecyclerViewAdapter.Section(entry.getKey(), entry.getValue()));
                 }

@@ -34,16 +34,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         Event event = events.get(i);
-
-        // TO DO make a better way of evaluating event importance/popularity
-        if (event.getScore() > 6304.0) {
-            viewHolder.view.setCardBackgroundColor(mContext.getResources().getColor(R.color.highlight));
-            viewHolder.eventTitle.setTextColor(mContext.getResources().getColor(R.color.white));
-        }
-        viewHolder.eventTitle.setText(event.getTitle());
-        viewHolder.eventTimeAgo.setText(event.getTimeAgo());
-        viewHolder.eventArticleCount.setText(String.format("%d articles", event.getArticles().size()));
-        viewHolder.event = event;
+        viewHolder.setEvent(event);
     }
 
     @Override
@@ -52,19 +43,30 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView eventTitle;
-        public TextView eventTimeAgo;
-        public TextView eventArticleCount;
-        public CardView view;
-        public Event event;
+        private CardView view;
+        private Event event;
 
         public ViewHolder(CardView itemView) {
             super(itemView);
-            eventTitle = (TextView)itemView.findViewById(R.id.eventTitle);
-            eventTimeAgo = (TextView)itemView.findViewById(R.id.eventTimeAgo);
-            eventArticleCount = (TextView)itemView.findViewById(R.id.eventArticleCount);
             view = itemView;
             view.setOnClickListener(this);
+        }
+
+        public void setEvent(Event event) {
+            this.event = event;
+
+            TextView eventTitle = (TextView)itemView.findViewById(R.id.eventTitle);
+            TextView eventTimeAgo = (TextView)itemView.findViewById(R.id.eventTimeAgo);
+            TextView eventArticleCount = (TextView)itemView.findViewById(R.id.eventArticleCount);
+
+            // TO DO make a better way of evaluating event importance/popularity
+            if (event.getScore() > 6304.0) {
+                view.setCardBackgroundColor(mContext.getResources().getColor(R.color.highlight));
+                eventTitle.setTextColor(mContext.getResources().getColor(R.color.white));
+            }
+            eventTitle.setText(event.getTitle());
+            eventTimeAgo.setText(event.getTimeAgo());
+            eventArticleCount.setText(String.format("%d articles", event.getArticles().size()));
         }
 
         @Override
