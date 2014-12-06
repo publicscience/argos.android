@@ -27,8 +27,13 @@ public class Story implements Comparable<Story>, Serializable {
     @SerializedName("updated_at")
     private Date updatedAt;
 
+    @SerializedName("num_events")
+    private Integer numEvents;
+
     public Integer getID() { return id; }
     public void setID(Integer id) { this.id = id; }
+    public Integer getNumEvents() { return numEvents; }
+    public void setNumEvents(Integer numEvents) { this.numEvents = numEvents; }
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
     public Date getCreatedAt() { return createdAt; }

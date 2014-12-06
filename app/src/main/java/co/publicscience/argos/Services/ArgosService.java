@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 
 import co.publicscience.argos.Models.Concept;
 import co.publicscience.argos.Models.Event;
+import co.publicscience.argos.Models.Story;
 import co.publicscience.argos.Responses.EventsResponse;
 import co.publicscience.argos.Responses.SearchResponse;
 import retrofit.RequestInterceptor;
@@ -51,6 +52,9 @@ public class ArgosService {
 
         @GET("/events/{id}")
         void getEvent(@Path("id") int eventId, Callback<Event> cb);
+
+        @GET("/stories/{id}")
+        void getStory(@Path("id") int storyId, Callback<Story> cb);
 
         @GET("/concepts/{slug}")
         void getConcept(@Path("slug") String conceptSlug, Callback<Concept> cb);

@@ -56,7 +56,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="start"
-                        android:textSize="28sp"
+                        android:textSize="14sp"
                         android:lineSpacingMultiplier="1.2"
                         android:letterSpacing="2"
                         android:layout_below="@id/storyTitle"
@@ -64,6 +64,13 @@
                         android:textColor="@color/white" />
                 </RelativeLayout>
             </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/events"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -3,6 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/menu_item_story"
+        app:showAsAction="always"
+        android:icon="@drawable/abc_ic_menu_copy_mtrl_am_alpha"
+        android:title="Story" />
+    <item
         android:id="@+id/menu_item_share"
         app:showAsAction="always"
         android:title="Share"

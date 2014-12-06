@@ -28,6 +28,10 @@ public class Concept implements Comparable<Concept>, Serializable {
     public Float getScore() { return score; }
     public void setScore(Float score) { this.score = score; }
 
+    private List<Story> stories;
+    public List<Story> getStories() { return stories; }
+    public void setStories(List<Story> stories) { this.stories = stories; }
+
     @Override
     public int compareTo(Concept concept) {
         // Score, descending (higher score first).

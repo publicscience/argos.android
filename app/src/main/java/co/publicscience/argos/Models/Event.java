@@ -20,6 +20,7 @@ public class Event implements Comparable<Event>, Serializable {
     private String image;
     private List<Article> articles = new ArrayList<Article>();
     private List<Concept> concepts = new ArrayList<Concept>();
+    private List<Story> stories = new ArrayList<Story>();
 
     @SerializedName("created_at")
     private Date createdAt;
@@ -27,8 +28,13 @@ public class Event implements Comparable<Event>, Serializable {
     @SerializedName("updated_at")
     private Date updatedAt;
 
+    @SerializedName("num_articles")
+    private Integer numArticles;
+
     public Integer getID() { return id; }
     public void setID(Integer id) { this.id = id; }
+    public Integer getNumArticles() { return numArticles; }
+    public void setNumArticles(Integer numArticles) { this.numArticles = numArticles; }
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
     public Date getCreatedAt() { return createdAt; }
@@ -60,6 +66,12 @@ public class Event implements Comparable<Event>, Serializable {
     }
     public void setConcepts(List<Concept> concepts) {
         this.concepts = concepts;
+    }
+    public List<Story> getStories() {
+        return stories;
+    }
+    public void setStories(List<Story> stories) {
+        this.stories = stories;
     }
 
 

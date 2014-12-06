@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -151,6 +152,24 @@ public class EventDetailActivity extends ActionBarActivity {
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_story:
+                if (event.getStories().size() > 0) {
+                    Intent detailIntent = new Intent(this, StoryDetailActivity.class);
+                    detailIntent.putExtra("story", event.getStories().get(0));
+                    startActivity(detailIntent);
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "This event isn't part of a story (yet)", Toast.LENGTH_SHORT).show();
+                }
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     private void setShareIntent() {
 
