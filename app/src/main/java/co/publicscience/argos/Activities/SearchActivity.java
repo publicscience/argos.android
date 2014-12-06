@@ -1,9 +1,11 @@
-package co.publicscience.argos;
+package co.publicscience.argos.Activities;
 
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+
+import co.publicscience.argos.R;
 
 public class SearchActivity extends ActionBarActivity {
     @Override

@@ -1,4 +1,4 @@
-package co.publicscience.argos;
+package co.publicscience.argos.Adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +13,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import co.publicscience.argos.Models.Concept;
+import co.publicscience.argos.R;
 
 public class ConceptAdapter extends RecyclerView.Adapter<ConceptAdapter.ViewHolder> {
     private List<Concept> concepts;

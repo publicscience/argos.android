@@ -9,6 +9,8 @@ public class ArgosApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        // Set the default font for the application.
         CalligraphyConfig.initDefault("fonts/GraphikApp-Regular.ttf", R.attr.fontPath);
     }
 }

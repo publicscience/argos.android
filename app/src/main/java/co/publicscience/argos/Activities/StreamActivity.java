@@ -1,4 +1,4 @@
-package co.publicscience.argos;
+package co.publicscience.argos.Activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -25,13 +25,14 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import co.publicscience.argos.Adapters.EventAdapter;
+import co.publicscience.argos.Adapters.SectionedRecyclerViewAdapter;
 import co.publicscience.argos.Models.Event;
 import co.publicscience.argos.Models.SearchResult;
-import co.publicscience.argos.Responses.EventsResponse;
-import co.publicscience.argos.Responses.Pagination;
-import co.publicscience.argos.Responses.SearchResponse;
+import co.publicscience.argos.R;
+import co.publicscience.argos.Responses.PaginatedResponse;
+import co.publicscience.argos.Adapters.SearchResultAdapter;
 import co.publicscience.argos.Services.ArgosService;
-import co.publicscience.argos.Util.SimpleSectionedRecyclerViewAdapter;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -45,8 +46,8 @@ public class StreamActivity extends ActionBarActivity implements SwipeRefreshLay
     EventAdapter mAdapter;
     ArrayList mEventList = new ArrayList();
     ArgosService argosService = new ArgosService();
-    List<SimpleSectionedRecyclerViewAdapter.Section> sections = new ArrayList<SimpleSectionedRecyclerViewAdapter.Section>();
-    SimpleSectionedRecyclerViewAdapter mSectionedAdapter;
+    List<SectionedRecyclerViewAdapter.Section> sections = new ArrayList<SectionedRecyclerViewAdapter.Section>();
+    SectionedRecyclerViewAdapter mSectionedAdapter;
 
     private int currentPage = 1;
     private boolean reachedEnd = false;
@@ -113,8 +114,8 @@ public class StreamActivity extends ActionBarActivity implements SwipeRefreshLay
         mAdapter = new EventAdapter(mEventList, R.layout.event_card, this);
 
         // Add the event adapter to the sectioned adapter and initialize it.
-        SimpleSectionedRecyclerViewAdapter.Section[] dummy = new SimpleSectionedRecyclerViewAdapter.Section[sections.size()];
-        mSectionedAdapter = new SimpleSectionedRecyclerViewAdapter(this, R.layout.event_section, R.id.section_text, mAdapter);
+        SectionedRecyclerViewAdapter.Section[] dummy = new SectionedRecyclerViewAdapter.Section[sections.size()];
+        mSectionedAdapter = new SectionedRecyclerViewAdapter(this, R.layout.event_section, R.id.section_text, mAdapter);
         mSectionedAdapter.setSections(sections.toArray(dummy));
         eventListView.setAdapter(mSectionedAdapter);
 
@@ -154,29 +155,29 @@ public class StreamActivity extends ActionBarActivity implements SwipeRefreshLay
     }
 
     private void requestData(final int page) {
-        argosService.getAPI().getEvents(page, new Callback<EventsResponse>() {
+        argosService.getAPI().getEvents(page, new Callback<PaginatedResponse<Event>>() {
             @Override
-            public void success(EventsResponse eventsResponse, Response response) {
+            public void success(PaginatedResponse<Event> pResponse, Response response) {
                 // Reset if we are refreshing, which will be when the requested page is lte the current page.
                 if (currentPage <= page) {
                     mEventList.clear();
                     sections.clear();
                 }
 
-                mEventList.addAll(eventsResponse.getEvents());
+                mEventList.addAll(pResponse.getResults());
 
-                HashMap<Integer,String> sectionData = Event.splitEvents(eventsResponse.getEvents());
+                HashMap<Integer,String> sectionData = Event.splitEvents(pResponse.getResults());
                 for (Map.Entry<Integer, String> entry : sectionData.entrySet()) {
-                    sections.add(new SimpleSectionedRecyclerViewAdapter.Section(entry.getKey(), entry.getValue()));
+                    sections.add(new SectionedRecyclerViewAdapter.Section(entry.getKey(), entry.getValue()));
                 }
 
-                SimpleSectionedRecyclerViewAdapter.Section[] dummy = new SimpleSectionedRecyclerViewAdapter.Section[sections.size()];
+                SectionedRecyclerViewAdapter.Section[] dummy = new SectionedRecyclerViewAdapter.Section[sections.size()];
                 mSectionedAdapter.setSections(sections.toArray(dummy));
 
                 mAdapter.notifyDataSetChanged();
                 mSwipeLayout.setRefreshing(false);
 
-                Pagination p = eventsResponse.getPagination();
+                PaginatedResponse.Pagination p = pResponse.getPagination();
                 if (p.page * p.per_page >= p.total_count) {
                     reachedEnd = true;
                 }
@@ -246,18 +247,18 @@ public class StreamActivity extends ActionBarActivity implements SwipeRefreshLay
 
     private List<SearchResult> searchResults = new ArrayList<SearchResult>();
     private List<SearchResult> search(String query) {
-        argosService.getAPI().getSearch(query, new Callback<SearchResponse>() {
+        argosService.getAPI().getSearch(query, new Callback<PaginatedResponse<SearchResult>>() {
             @Override
-            public void success(SearchResponse searchResponse, Response response) {
+            public void success(PaginatedResponse<SearchResult> pResponse, Response response) {
                 searchResults.clear();
-                searchResults.addAll(searchResponse.getSearchResults());
+                searchResults.addAll(pResponse.getResults());
 
                 String[] columnNames = {"_id", "name", "type", "id"};
                 String[] temp = new String[4];
                 int _id = 0;
 
                 MatrixCursor cursor = new MatrixCursor(columnNames);
-                for (SearchResult result : searchResponse.getSearchResults()) {
+                for (SearchResult result : pResponse.getResults()) {
                     temp[0] = Integer.toString(_id++);
 
                     String name = result.getName();

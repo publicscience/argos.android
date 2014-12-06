@@ -1,13 +1,11 @@
-package co.publicscience.argos;
+package co.publicscience.argos.Activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,10 +16,9 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import co.publicscience.argos.Models.Article;
-import co.publicscience.argos.Models.Concept;
 import co.publicscience.argos.Models.Event;
 import co.publicscience.argos.Models.Story;
+import co.publicscience.argos.R;
 import co.publicscience.argos.Services.ArgosService;
 import retrofit.Callback;
 import retrofit.RetrofitError;

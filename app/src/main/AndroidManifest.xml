@@ -10,7 +10,7 @@
         android:theme="@style/AppTheme" >
         <meta-data android:name="android.app.default_searchable" android:value=".SearchActivity" />
         <activity
-            android:name="co.publicscience.argos.StreamActivity"
+            android:name=".Activities.StreamActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop" >
             <intent-filter>
@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SearchActivity"
+            android:name=".Activities.SearchActivity"
             android:label="Search"
             android:launchMode="singleTop" >
             <intent-filter>
@@ -27,25 +27,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".EventDetailActivity"
+            android:name=".Activities.EventDetailActivity"
             android:label="Event"
-            android:parentActivityName=".StreamActivity">
+            android:parentActivityName=".Activities.StreamActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".StreamActivity"/>
         </activity>
         <activity
-            android:name=".StoryDetailActivity"
+            android:name=".Activities.StoryDetailActivity"
             android:label="Story"
-            android:parentActivityName=".StreamActivity">
+            android:parentActivityName=".Activities.StreamActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".StreamActivity"/>
         </activity>
         <activity
-            android:name=".ConceptDetailActivity"
+            android:name=".Activities.ConceptDetailActivity"
             android:label="Concept"
-            android:parentActivityName=".EventDetailActivity">
+            android:parentActivityName=".Activities.EventDetailActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".EventDetailActivity"/>

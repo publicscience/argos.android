@@ -5,9 +5,9 @@ import com.google.gson.GsonBuilder;
 
 import co.publicscience.argos.Models.Concept;
 import co.publicscience.argos.Models.Event;
+import co.publicscience.argos.Models.SearchResult;
 import co.publicscience.argos.Models.Story;
-import co.publicscience.argos.Responses.EventsResponse;
-import co.publicscience.argos.Responses.SearchResponse;
+import co.publicscience.argos.Responses.PaginatedResponse;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
@@ -48,7 +48,7 @@ public class ArgosService {
 
     public interface ArgosServiceInterface {
         @GET("/events")
-        void getEvents(@Query("page") int page, Callback<EventsResponse> cb);
+        void getEvents(@Query("page") int page, Callback<PaginatedResponse<Event>> cb);
 
         @GET("/events/{id}")
         void getEvent(@Path("id") int eventId, Callback<Event> cb);
@@ -60,6 +60,6 @@ public class ArgosService {
         void getConcept(@Path("slug") String conceptSlug, Callback<Concept> cb);
 
         @GET("/search/{query}")
-        void getSearch(@Path("query") String query, Callback<SearchResponse> cb);
+        void getSearch(@Path("query") String query, Callback<PaginatedResponse<SearchResult>> cb);
     }
 }

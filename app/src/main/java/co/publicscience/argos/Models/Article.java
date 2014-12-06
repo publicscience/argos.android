@@ -13,8 +13,10 @@ public class Article implements Serializable {
 
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
+
     public Source getSource() { return source; }
     public void setSource(Source source) { this.source = source; }
+
     public String getExtUrl() { return extUrl; }
     public void setExtUrl(String extUrl) { this.extUrl = extUrl; }
 }

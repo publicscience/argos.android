@@ -1,4 +1,4 @@
-package co.publicscience.argos;
+package co.publicscience.argos.Activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,8 +18,8 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import co.publicscience.argos.Models.Concept;
-import co.publicscience.argos.Models.Event;
 import co.publicscience.argos.Models.Story;
+import co.publicscience.argos.R;
 import co.publicscience.argos.Services.ArgosService;
 import retrofit.Callback;
 import retrofit.RetrofitError;

@@ -1,4 +1,4 @@
-package co.publicscience.argos;
+package co.publicscience.argos.Adapters;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import co.publicscience.argos.Models.SearchResult;
+import co.publicscience.argos.R;
 
 
 public class SearchResultAdapter extends SimpleCursorAdapter {

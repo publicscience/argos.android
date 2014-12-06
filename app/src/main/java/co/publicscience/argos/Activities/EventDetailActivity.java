@@ -1,4 +1,4 @@
-package co.publicscience.argos;
+package co.publicscience.argos.Activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,10 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,10 +24,11 @@ import com.squareup.picasso.Picasso;
 import java.util.Collections;
 import java.util.List;
 
+import co.publicscience.argos.Adapters.ConceptAdapter;
 import co.publicscience.argos.Models.Article;
 import co.publicscience.argos.Models.Concept;
 import co.publicscience.argos.Models.Event;
-import co.publicscience.argos.Models.SummarySentence;
+import co.publicscience.argos.R;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class EventDetailActivity extends ActionBarActivity {
@@ -86,14 +85,14 @@ public class EventDetailActivity extends ActionBarActivity {
         Picasso.with(this).load(event.getImage()).fit().centerCrop().into(imageView);
 
         // Add bullet points to summary items TO DO make this nicer
-        List<SummarySentence> summary = event.getSummary();
+        List<Event.SummarySentence> summary = event.getSummary();
 //        for (int i=0; i<summary.size(); i++) {
 //            summary.set(i, "• " + summary.get(i));
 //        }
 
         // Create the summary items.
         LinearLayout summaryView = (LinearLayout)findViewById(R.id.eventSummary);
-        for (SummarySentence summarySentence : event.getSummary()) {
+        for (Event.SummarySentence summarySentence : event.getSummary()) {
             View vi = getLayoutInflater().inflate(R.layout.summary_item, null);
             TextView summarySentenceView = (TextView)vi.findViewById(R.id.summarySentence);
             summarySentenceView.setText(summarySentence.getSentence());
