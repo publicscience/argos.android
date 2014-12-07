@@ -67,12 +67,13 @@ public class Cluster implements Comparable<Cluster>, Serializable {
 
 
     public String getDaysAgo() {
-        return getDaysAgo(createdAt, new Date());
+        return getDaysAgo(new Date(), createdAt);
     }
     public String getTimeAgo() {
-        return DateUtils.getRelativeTimeSpanString(createdAt.getTime(), new Date().getTime(), 0).toString();
+        Date now = new Date();
+        return DateUtils.getRelativeTimeSpanString(createdAt.getTime(), now.getTime(), DateUtils.MINUTE_IN_MILLIS).toString();
     }
-    private static String getDaysAgo(Date from, Date to) {
+    private static String getDaysAgo(Date to, Date from) {
         return DateUtils.getRelativeTimeSpanString(from.getTime(), to.getTime(), DateUtils.DAY_IN_MILLIS).toString();
     }
 
